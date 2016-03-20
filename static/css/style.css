@@ -1,0 +1,22 @@
+body {
+    padding-top: 50px;
+    padding-bottom: 50px;
+    background-color: #fafafa;
+}
+
+.btn-signup {
+    color: #fff;
+    background-color: #20b010;
+    border-color: #05a41f;
+}
+
+.btn-signup:hover {
+    color: #fff;
+    background-color: #21b711;
+    border-color: #05a41f;
+}
+
+.navbar-nav .btn-signup {
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
