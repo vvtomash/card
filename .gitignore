@@ -1,3 +1,6 @@
+test1/**
+.idea
 .idea/*
+application/*
 .DS_Store
 test
