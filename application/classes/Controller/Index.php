@@ -46,6 +46,7 @@ class Controller_Index extends Controller {
 		View::set_global('pageName', $this->pageName);
 		$this->response->body(View::factory('index')
 			->set('header', $this->getHeader())
+		    ->set('searchBar', View::factory('searchBar')->render())
 			->set('content', $this->content)
 			->set('footer', $this->getFooter())
 		);
@@ -53,7 +54,9 @@ class Controller_Index extends Controller {
 
 	protected function getHeader() {
 		$topMenu = $this->getTopMenu();
-		return View::factory('header')->set('menu', $topMenu)->render();
+		return View::factory('header')
+			->set('menu', $topMenu)
+			->render();
 	}
 
 	protected function getMain() {
@@ -61,13 +64,15 @@ class Controller_Index extends Controller {
 	}
 
 	protected function getFooter() {
-		return View::factory('footer')->set('content', 'footer')->render();
+		return View::factory('footer')->set('content', '')->render();
 	}
 
 	private function getTopMenu() {
 		$userCardsMenu = View::factory('menu/userCards');
+		$userTradesMenu = View::factory('menu/userTrades');
 		return View::factory('menu/topUserMenu')
 			->set('userCardsMenu', $userCardsMenu)
+			->set('userTradesMenu', $userTradesMenu)
 			->render();
 	}
 

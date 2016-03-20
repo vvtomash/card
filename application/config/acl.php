@@ -24,9 +24,20 @@ return [
 		'imports' => ['login'],
 		'remove' => ['login'],
 		'add' => ['login'],
+		'removeWant' => ['login'],
+		'addWant' => ['login'],
 	],
 
 	'Controller_Search' => [
+		'index' => ['public'],
 		'cards' => ['public'],
+	],
+
+	'Controller_Trades' => [
+		'send' => ['login'],
+		'sending' => ['login'],
+		'receiving' => ['login'],
+		'history' => ['login'],
+		'partners' => ['login'],
 	]
 ];

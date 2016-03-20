@@ -39,6 +39,7 @@ class Model_Cards_UserCards extends \Collection {
 		$card->card_id = $id;
 		$card->user_id = $this->userId;
 		if ($card->save()) {
+			$card->added_timestamp = date('Y-m-d H:i:s');
 			return $card;
 		}
 		return null;

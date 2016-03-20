@@ -11,13 +11,12 @@ class Controller_Cards extends Controller_Index {
 	}
 
 	public function action_wants() {
+		$this->pageName = 'Мои хотелки';
 		$this->activeMenu = 'cards/wants';
-		$this->content = 'Wants cards';
-	}
-
-	public function action_imports() {
-		$this->activeMenu = 'cards/imports';
-		$this->content = 'Imports cards';
+		$userWants = Model_Cards_UserWants::instance($this->currentUser->id)->load();
+		$this->content = View::factory('pages/cards/userWants')
+			->set('userWants', $userWants)
+			->render();
 	}
 
 	public function action_remove() {
@@ -44,11 +43,42 @@ class Controller_Cards extends Controller_Index {
 			$this->errors[] = 'Failed adding';
 			return;
 		}
-		$card = new Model_Cards_CardEntity(1);
 		$this->content = [
 			'id' => $userCard->id,
 			'name' => $userCard->card->name,
-			'point' => $userCard->point,
+			'point' => $userCard->card->point,
+			'added_timestamp' => $userCard->added_timestamp,
+		];
+	}
+
+	public function action_removeWant() {
+		$id = $this->request->post('id');
+		if (empty($id)) {
+			$this->errors[] = 'Empty card id';
+			return;
+		}
+		if (!Model_Cards_UserWants::instance($this->currentUser->id)->remove($id)) {
+			$this->errors[] = 'Failed removing';
+			return;
+		}
+		$this->content = true;
+	}
+
+	public function action_addWant() {
+		$id = $this->request->post('id');
+		if (empty($id)) {
+			$this->errors[] = 'Empty card id';
+			return;
+		}
+
+		if (($userCard = Model_Cards_UserWants::instance($this->currentUser->id)->add($id)) === null) {
+			$this->errors[] = 'Failed adding';
+			return;
+		}
+		$this->content = [
+			'id' => $userCard->id,
+			'name' => $userCard->card->name,
+			'point' => $userCard->card->point,
 			'added_timestamp' => $userCard->added_timestamp,
 		];
 	}

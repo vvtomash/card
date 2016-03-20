@@ -4,6 +4,17 @@ body {
     background-color: #fafafa;
 }
 
+.main {
+    position: relative;
+}
+
+.large-text {
+    text-size: 18px;
+}
+.alert {
+    margin: 2px;
+}
+
 .btn-signup {
     color: #fff;
     background-color: #20b010;
@@ -20,3 +31,64 @@ body {
     margin-top: 8px;
     margin-bottom: 8px;
 }
+
+.navbar h1, .navbar h2, .navbar h3 {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.container .search-result {
+    padding: 5px;
+}
+
+/*.container .search .card {
+    --width: 230px;
+    --height: 270px;
+}*/
+
+/*.container .search .card .info {*/
+    /*float: left;*/
+    /*position: relative;*/
+    /*height: 100%;*/
+/*}*/
+
+/*.container .search .card .title {*/
+    /*top: 0px;*/
+/*}*/
+
+/*.container .search .card .description {*/
+    /*padding-bottom: 4px;*/
+/*}*/
+
+/*.container .search .card .img {*/
+    /*float: left;*/
+/*}*/
+
+/*.container .search .card .img img {*/
+    /*height: 200px;*/
+    /*width: auto;*/
+/*}*/
+
+/*.container .search .card .action {*/
+    /*float: right;*/
+    /*height: 100%;*/
+    /*width: 35px;*/
+/*}*/
+
+/*.container .search .card .action div {*/
+    /*float: right;*/
+    /*width: auto;*/
+    /*display: inline;*/
+    /*padding-top: 10px;*/
+    /*padding-bottom: 10px;*/
+/*}*/
+
+/*.container .search .card .action .add {*/
+    /*float: right;*/
+/*}*/
+
+/*.container .search .card .point {*/
+    /*padding: 6px 12px;*/
+    /*text-align: center;*/
+    /*width: 100%;*/
+/*}*/

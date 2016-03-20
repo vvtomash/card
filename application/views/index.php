@@ -5,6 +5,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href="/static/css/bootstrap.css" rel="stylesheet">
+	<link href="/static/css/backbone.notifications.css" rel="stylesheet">
 	<link href="/static/css/style.css" rel="stylesheet">
 	<link href="/static/css/forms.css" rel="stylesheet">
 
@@ -12,13 +13,15 @@
 	<script src="/static/js/bootstrap.js"></script>
 	<script src="/static/js/underscore.js"></script>
 	<script src="/static/js/backbone.js"></script>
+	<script src="/static/js/backbone.notification.js"></script>
+	<script src="/static/js/main.js"></script>
+	<script src="/static/js/ajax.js"></script>
 	<script src="/static/js/EventDispatcher.js"></script>
-	<script src="/static/js/cards/UserCards.js"></script>
 </head>
 <body>
 	<div><?=$header?></div>
-	<div class="container">
-		<h2><?=$pageName?></h2>
+	<div><?=$searchBar?></div>
+	<div class="main container">
 		<?=$content?>
 	</div>
 	<?=$footer?>
