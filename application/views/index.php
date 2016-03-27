@@ -25,6 +25,6 @@
 		<?=$content?>
 	</div>
 	<?=$footer?>
-
+	<?=View::factory('profiler/stats')?>
 </body>
 </html>

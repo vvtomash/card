@@ -9,6 +9,7 @@
 			<li class="dropdown">
 				<a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?=$user->email?><span class="caret"></span></a>
 				<ul class="dropdown-menu">
+					<li><a href="/profile">Профиль</a></li>
 					<li><a href="/login/logout">Выйти</a></li>
 				</ul>
 			</li>
@@ -28,4 +29,3 @@
 		<?}?>
 	</li>
 </ul>
-

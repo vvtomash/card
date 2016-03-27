@@ -1,0 +1,1 @@
+<?print_r($profile->as_array())?>

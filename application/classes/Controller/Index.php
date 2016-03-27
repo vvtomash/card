@@ -2,6 +2,7 @@
 
 class Controller_Index extends Controller {
 
+	private $profile = true;
 	protected $content;
 	protected $activeMenu;
 	protected $pageName = 'Главная';
@@ -17,6 +18,7 @@ class Controller_Index extends Controller {
 		} catch (HTTP_Exception_403 $e) {
 			$this->redirect('/login');
 		}
+		View::set_global('user', Auth::instance()->get_user());
 	}
 
 	public function action_index() {
@@ -24,6 +26,7 @@ class Controller_Index extends Controller {
 	}
 
 	public function after() {
+
 		if ($this->request->is_ajax()) {
 			if (!empty($this->errors)) {
 				$this->response->status('500');
@@ -40,8 +43,6 @@ class Controller_Index extends Controller {
 		if ($this->content === null) {
 			throw new HTTP_Exception_400;
 		}
-
-		View::set_global('user', Auth::instance()->get_user());
 		View::set_global('activeMenu', $this->getActiveMenu());
 		View::set_global('pageName', $this->pageName);
 		$this->response->body(View::factory('index')
@@ -49,6 +50,7 @@ class Controller_Index extends Controller {
 		    ->set('searchBar', View::factory('searchBar')->render())
 			->set('content', $this->content)
 			->set('footer', $this->getFooter())
+			->set('profiler', '')
 		);
 	}
 

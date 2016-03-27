@@ -9,6 +9,10 @@ return [
 		'index' => ['login'],
 	],
 
+	'Controller_Profile' => [
+		'index' => ['login'],
+	],
+
 	'Controller_Login' => [
 		'index' => ['public'],
 		'logout' => ['public'],
@@ -35,8 +39,10 @@ return [
 
 	'Controller_Trades' => [
 		'send' => ['login'],
+		'startTrade' => ['login'],
 		'sending' => ['login'],
 		'receiving' => ['login'],
+		'completeTradeIn' => ['login'],
 		'history' => ['login'],
 		'partners' => ['login'],
 	]

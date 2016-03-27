@@ -23,6 +23,16 @@ class Model_Cards_Manager extends DBModel {
 		return static::getDb()->query(Database::SELECT, $sql);
 	}
 
+	public static function loadAllWants(array $filters = []):Database_Result_Cached {
+		$sql = "select uc.*, c.id `card:id`, c.name `card:name`, c.point `card:point`, u.id `user:id`, u.email `user:email`
+				from `user_wants` uc
+ 				join `cards` c on c.id = uc.card_id
+ 				join `users` u on u.id = uc.user_id
+ 				where ".self::buildWhereExpression($filters)."
+				order by uc.`id` desc;";
+		return static::getDb()->query(Database::SELECT, $sql);
+	}
+
 	public static function removeUserCard(int $userId, int $userCardId):bool {
 		$sql = "delete from `user_cards` where user_id = $userId and id = $userCardId";
 		return (bool)static::getDb()->query(Database::DELETE, $sql);
