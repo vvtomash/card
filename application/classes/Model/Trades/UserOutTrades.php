@@ -19,7 +19,6 @@ class Model_Trades_UserOutTrades extends \Collection {
 
 	public function load():Model_Trades_UserOutTrades {
 		foreach (Model_Trades_Manager::loadOutUserTrades($this->userId, ['status' => ['pending', 'debate']]) as $trade) {
-			Debug::vars($trade);
 			$this->entities[$trade['id']] = new Model_Trades_UserTradeEntity(null, $trade);
 		}
 		return $this;

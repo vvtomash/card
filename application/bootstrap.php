@@ -40,6 +40,8 @@ setlocale(LC_ALL, 'en_US.utf-8');
  */
 spl_autoload_register(array('Kohana', 'auto_load'));
 
+spl_autoload_register(array('Loader', 'autoLoad'));
+
 /**
  * Optionally, you can enable a compatibility auto-loader for use with
  * older modules that have not been updated for PSR-0.
@@ -126,12 +128,11 @@ Kohana::modules(array(
 	// 'codebench'  => MODPATH.'codebench',  // Benchmarking tool
 	 'database'   => MODPATH.'database',   // Database access
 	// 'image'      => MODPATH.'image',      // Image manipulation
-	// 'minion'     => MODPATH.'minion',     // CLI Tasks
+	 'minion'     => MODPATH.'minion',     // CLI Tasks
 	 'orm'        => MODPATH.'orm',        // Object Relationship Mapping
 	// 'unittest'   => MODPATH.'unittest',   // Unit testing
 	// 'userguide'  => MODPATH.'userguide',  // User guide and API documentation
 	));
-
 /**
  * Cookie Salt
  * @see  http://kohanaframework.org/3.3/guide/kohana/cookies
@@ -145,8 +146,16 @@ Cookie::$salt = 'HD*)&ig2i4yg978';
  * Set the routes. Each route must have a minimum of a name, a URI and a set of
  * defaults for the URI.
  */
-Route::set('default', '(<controller>(/<action>(/<id>)))')
-	->defaults(array(
+
+Route::set('pager_without_action', '<controller>(/page-<page>)', ['page' => '[0-9]+'])
+	->defaults([
+				   'controller' => 'index',
+				   'action'     => 'index',
+			   ]);
+
+Route::set('default', '(<controller>(/<action>(/page-<page>)))', ['page' => '[0-9]+'])
+	->defaults([
 		'controller' => 'index',
 		'action'     => 'index',
-	));
+	]);
+

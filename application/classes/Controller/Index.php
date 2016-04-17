@@ -4,6 +4,7 @@ class Controller_Index extends Controller {
 
 	private $profile = true;
 	protected $content;
+	protected $errors;
 	protected $activeMenu;
 	protected $pageName = 'Главная';
 	/**
@@ -18,7 +19,16 @@ class Controller_Index extends Controller {
 		} catch (HTTP_Exception_403 $e) {
 			$this->redirect('/login');
 		}
-		View::set_global('user', Auth::instance()->get_user());
+
+		View::set_global('user', $this->currentUser);
+		$this->registerEvents();
+	}
+
+	private function registerEvents() {
+		$events = Kohana::$config->load('events')->as_array();
+		foreach ($events as $event => $handler) {
+			Observer::bind($event, $handler);
+		}
 	}
 
 	public function action_index() {
@@ -26,7 +36,7 @@ class Controller_Index extends Controller {
 	}
 
 	public function after() {
-
+		Observer::trigger(new Event('LoadPage', ['action' => $this->request->action()]));
 		if ($this->request->is_ajax()) {
 			if (!empty($this->errors)) {
 				$this->response->status('500');
@@ -45,13 +55,15 @@ class Controller_Index extends Controller {
 		}
 		View::set_global('activeMenu', $this->getActiveMenu());
 		View::set_global('pageName', $this->pageName);
-		$this->response->body(View::factory('index')
+		$view = View::factory('index')
 			->set('header', $this->getHeader())
-		    ->set('searchBar', View::factory('searchBar')->render())
+			->set('searchBar', View::factory('searchBar')->render())
 			->set('content', $this->content)
-			->set('footer', $this->getFooter())
-			->set('profiler', '')
-		);
+			->set('footer', $this->getFooter());
+		if ($this->profile) {
+			$view->set('profile', View::factory('services/profile'));
+		}
+		$this->response->body($view);
 	}
 
 	protected function getHeader() {
@@ -72,10 +84,18 @@ class Controller_Index extends Controller {
 	private function getTopMenu() {
 		$userCardsMenu = View::factory('menu/userCards');
 		$userTradesMenu = View::factory('menu/userTrades');
-		return View::factory('menu/topUserMenu')
+		$view = View::factory('menu/topUserMenu');
+		if ($this->currentUser) {
+			$this->setAuthVarsMenu($view);
+		}
+		return $view
 			->set('userCardsMenu', $userCardsMenu)
 			->set('userTradesMenu', $userTradesMenu)
 			->render();
+	}
+
+	private function setAuthVarsMenu($view) {
+		return $view->set('countUnreadMessages', \Model_Messages_Inbox::instance($this->currentUser->id)->getCountUnread());
 	}
 
 	private function getActiveMenu() {
@@ -89,7 +109,6 @@ class Controller_Index extends Controller {
 	private function _checkPermission() {
 		$acl = Arr::get(Kohana::$config->load('acl')->as_array(), get_called_class());
 		$action = $this->request->action();
-
 		if ($roles = Arr::get($acl, $action)) {
 			if (in_array('public', $roles)) {
 				return true;

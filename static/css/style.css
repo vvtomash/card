@@ -8,6 +8,10 @@ body {
     position: relative;
 }
 
+.profiler {
+    margin-top: 20px;
+}
+
 .large-text {
     text-size: 18px;
 }
@@ -41,6 +45,37 @@ body {
     padding: 5px;
 }
 
+.quick-add {
+    position: relative;
+    padding: 0;
+}
+
+.quick-add .dropdown-search-result {
+    margin: 0;
+    width: 100%;
+}
+
+.navbar-form .pager {
+    margin: 0;
+}
+
+/* Inbox */
+
+.inbox .new-message {
+    font-weight: bold;
+}
+
+
+/* Search */
+
+.search-result .card img {
+    width: 200px;
+    height: 298px;
+}
+
+.search-result .card .actions {
+    text-align: center;
+}
 /*.container .search .card {
     --width: 230px;
     --height: 270px;

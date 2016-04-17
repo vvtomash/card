@@ -17,4 +17,11 @@ class Model_Profile extends ORM {
 		]
 	];
 
+	public function rules() {
+		return [
+			'phone' => [
+				['regex', [':value', '/^\+\d{3}\(\d{2}\)\d{3}-\d{2}-\d{2}$/']],
+			],
+		];
+	}
 }

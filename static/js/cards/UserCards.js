@@ -11,11 +11,13 @@ var UserCardsCollection = Backbone.Collection.extend({
 	urls : {
 		remove: '/cards/remove',
 		add: '/cards/add',
+		next: '/cards/nextHaves',
 	},
 
 	initialize: function() {
-		this.listenTo(Dispatcher, 'UserCard:removeClick', this.removeCard);
+		this.listenTo(Dispatcher, 'UserCard:RemoveClick', this.removeCard);
 		this.listenTo(Dispatcher, 'QuickAdd:Card', this.addCard);
+		this.listenTo(Dispatcher, 'UserCard:Removed', this.getNext);
 	},
 
 	addCard: function(cardId) {
@@ -25,7 +27,7 @@ var UserCardsCollection = Backbone.Collection.extend({
 			{id: cardId},
 			function(data) {
 				if (data) {
-					_this.add([data]);
+					_this.add([data], {prepend: true});
 					notifications.trigger("success", "Card was added successfully");
 				}
 			}
@@ -39,9 +41,24 @@ var UserCardsCollection = Backbone.Collection.extend({
 			{id: cardId},
 			function(data) {
 				if (data) {
+					console.log('remove');
 					_this.remove(cardId);
-					Dispatcher.trigger('UserCard:removed:' + cardId);
+					Dispatcher.trigger('UserCard:Removed');
+					Dispatcher.trigger('UserCard:Removed:' + cardId);
 					notifications.trigger("success", "Card was removed successfully");
+				}
+			}
+		);
+	},
+
+	getNext: function() {
+		var _this = this;
+		ajax(
+			this.urls.next,
+			{page: pager.getCurrentPage(), count: 1},
+			function(data) {
+				if (data) {
+					_this.add(data);
 				}
 			}
 		);
@@ -58,7 +75,8 @@ var UserCardView = Backbone.View.extend({
 
 	initialize: function() {
 		this.$el.attr('data-id', this.model.get('id'));
-		this.listenTo(Dispatcher, 'UserCard:removed:' + this.model.get('id'), this.remove)
+		this.listenTo(Dispatcher, 'UserCard:Removed:' + this.model.get('id'), this.remove);
+		this.listenTo(this.model, 'remove', this.remove);
 	},
 
 	remove: function() {
@@ -75,7 +93,7 @@ var UserCardView = Backbone.View.extend({
 	removeCard: function(e) {
 		e.preventDefault();
 		e.stopPropagation();
-		Dispatcher.trigger('UserCard:removeClick', this.model.get('id'));
+		Dispatcher.trigger('UserCard:RemoveClick', this.model.get('id'));
 	}
 });
 
@@ -83,10 +101,10 @@ var UserCardsViewClass = Backbone.View.extend({
 	tagName: "table",
 	className: "user-cards",
 	cards: [],
+	maxCountCards: 0,
 
 	initialize: function() {
-		this.listenTo(this.model, 'add', this.addCard);
-		this.listenTo(this.model, 'remove', this.removeCard);
+		var collection = this.model;
 		this.$el.find('tr.user-card').each(function() {
 			$this = $(this);
 			var card = new UserCard({
@@ -95,14 +113,27 @@ var UserCardsViewClass = Backbone.View.extend({
 				point: $this.find('.point').text(),
 				added_timestamp: $this.find('.added-timestamp').text()
 			});
+			collection.add(card);
 			new UserCardView({el: this, model: card});
+
 		});
+		this.maxCountCards = pager.getOnPage();
+		this.listenTo(this.model, 'add', this.addCard);
 	},
 
-	addCard: function(model) {
+	addCard: function(model, collection, options) {
 		var userCard = new UserCardView({model: model});
 		userCard.render();
-		this.$el.find('tbody').prepend(userCard.el)
+		if (options.prepend) {
+			this.$el.find('tbody').prepend(userCard.el);
+		} else {
+			this.$el.find('tbody').append(userCard.el);
+		}
+
+		while (this.model.length > this.maxCountCards) {
+			var cardId = this.$el.find(".user-card:last").attr("data-id");
+			this.model.remove(cardId);
+		}
 	}
 });
 

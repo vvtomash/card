@@ -11,11 +11,13 @@ var UserWantsCollection = Backbone.Collection.extend({
 	urls : {
 		remove: '/cards/removeWant',
 		add: '/cards/addWant',
+		next: '/cards/nextWants',
 	},
 
 	initialize: function() {
 		this.listenTo(Dispatcher, 'UserWant:RemoveClick', this.removeWant);
 		this.listenTo(Dispatcher, 'QuickAdd:Card', this.addWant);
+		this.listenTo(Dispatcher, 'UserWant:Removed', this.getNext);
 	},
 
 	addWant: function(cardId) {
@@ -25,7 +27,7 @@ var UserWantsCollection = Backbone.Collection.extend({
 			{id: cardId},
 			function(data) {
 				if (data) {
-					_this.add([data]);
+					_this.add([data], {prepend: true});
 					notifications.trigger("success", "Card was added successfully");
 				}
 			}
@@ -40,8 +42,22 @@ var UserWantsCollection = Backbone.Collection.extend({
 			function(data) {
 				if (data) {
 					_this.remove(cardId);
+					Dispatcher.trigger('UserWant:Removed');
 					Dispatcher.trigger('UserWant:Removed:' + cardId);
 					notifications.trigger("success", "Card removed added successfully");
+				}
+			}
+		);
+	},
+
+	getNext: function() {
+		var _this = this;
+		ajax(
+			this.urls.next,
+			{page: pager.getCurrentPage(), count: 1},
+			function(data) {
+				if (data) {
+					_this.add(data);
 				}
 			}
 		);
@@ -58,7 +74,8 @@ var UserWantView = Backbone.View.extend({
 
 	initialize: function() {
 		this.$el.attr('data-id', this.model.get('id'));
-		this.listenTo(Dispatcher, 'UserWant:Removed:' + this.model.get('id'), this.remove)
+		this.listenTo(Dispatcher, 'UserWant:Removed:' + this.model.get('id'), this.remove);
+		this.listenTo(this.model, 'remove', this.remove);
 	},
 
 	remove: function() {
@@ -85,7 +102,7 @@ var UserWantsViewClass = Backbone.View.extend({
 	cards: [],
 
 	initialize: function() {
-		this.listenTo(this.model, 'add', this.addWant);
+		var collection = this.model;
 		this.$el.find('tr.user-want').each(function() {
 			$this = $(this);
 			var want = new UserWant({
@@ -94,14 +111,26 @@ var UserWantsViewClass = Backbone.View.extend({
 				point: $this.find('.point').text(),
 				added_timestamp: $this.find('.added-timestamp').text()
 			});
+			collection.add(want);
 			new UserWantView({el: this, model: want});
 		});
+		this.maxCountCards = pager.getOnPage();
+		this.listenTo(this.model, 'add', this.addWant);
 	},
 
-	addWant: function(model) {
+	addWant: function(model, collection, options) {
 		var userWant = new UserWantView({model: model});
 		userWant.render();
-		this.$el.find('tbody').prepend(userWant.el);
+		if (options.prepend) {
+			this.$el.find('tbody').prepend(userWant.el);
+		} else {
+			this.$el.find('tbody').append(userWant.el);
+		}
+
+		while (this.model.length > this.maxCountCards) {
+			var cardId = this.$el.find(".user-want:last").attr("data-id");
+			this.model.remove(cardId);
+		}
 	}
 });
 

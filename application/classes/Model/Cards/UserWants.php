@@ -16,8 +16,8 @@ class Model_Cards_UserWants extends \Collection {
 
 	private static $instances = [];
 
-	public function load():Model_Cards_UserWants {
-		foreach (Model_Cards_Manager::loadUserWants($this->userId) as $card) {
+	public function load(int $limit, int $offset = 0):Model_Cards_UserWants {
+		foreach (Model_Cards_Manager::loadUserWants($this->userId, $limit, $offset) as $card) {
 			$this->entities[$card['id']] = new Model_Cards_UserWantEntity(null, $card);
 		}
 		return $this;
@@ -43,5 +43,9 @@ class Model_Cards_UserWants extends \Collection {
 			return $card;
 		}
 		return null;
+	}
+
+	public function totalInfo():array {
+		return Model_Cards_Manager::totalInfoUserWants($this->userId);
 	}
 }

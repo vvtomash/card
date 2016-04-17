@@ -14,8 +14,10 @@ class Model_Search extends DBModel {
 		if (strlen($searchName) < self::SEARCH_TEXT_MIN_LEN) {
 			throw new SearchExeption('Too small text for search');
 		}
-		$sql = "select * from `cards`
-			where `name` LIKE  ".static::getDb()->escape("%$searchName%");
+		$sql = "select c.* from `cards` c
+			join `card_info` ci on ci.`card_id` = c.`id`
+			where c.`name` LIKE  ".static::getDb()->escape("%$searchName%").
+			" order by ci.multiverse_id desc;";
 		return static::getDb()->query(Database::SELECT, $sql)->as_array();
 	}
 }

@@ -1,11 +1,20 @@
 <script src="/static/js/cards/UserCards.js"></script>
 <script src="/static/js/cards/QuickAddCard.js"></script>
 <ul class="nav nav-pills">
-	<div class="form-group navbar-form navbar-left quick-add">
-		<input type="text" class="form-control dropdown-search" placeholder="Быстрое добавление">
-		<ul class="dropdown-search-result">
-		</ul>
-	</div>
+	<li class="form-group navbar-form navbar-left">
+		<div class="quick-add">
+			<input type="text" class="form-control dropdown-search" placeholder="Быстрое добавление">
+			<ul class="dropdown-search-result dropdown-menu">
+			</ul>
+		</div>
+	</li>
+	<li class="navbar-form navbar-left">
+		<h5>Всего: <?=$totalInfo['count']?> карт, <?=$totalInfo['points']?> очков</h5>
+	</li>
+	<li class="navbar-right navbar-form">
+		<?=$pager?>
+	</li>
+
 </ul>
 
 <table class="table table-hover user-cards">
@@ -36,3 +45,8 @@
 		</tr>
 	</tfoot>
 </table>
+<ul class="nav nav-pills">
+	<div class="navbar-right navbar-form">
+		<?=$pager?>
+	</div>
+</ul>

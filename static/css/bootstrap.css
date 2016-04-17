@@ -4816,7 +4816,14 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
 .pager li {
   display: inline;
 }
+
+.pager li > input {
+  text-align: center;
+  width: 50px;
+}
+
 .pager li > a,
+.pager li > input,
 .pager li > span {
   display: inline-block;
   padding: 5px 14px;
@@ -4844,6 +4851,15 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
   color: #777;
   cursor: not-allowed;
   background-color: #fff;
+}
+.pager .active > a,
+.pager .active > a:hover,
+.pager .active > a:focus,
+.pager .active > span {
+  color: #fff;
+  cursor: default;
+  background-color: #337ab7;
+  border-color: #337ab7;
 }
 .label {
   display: inline;

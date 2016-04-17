@@ -3,6 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title><?=$pageName?></title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href="/static/css/bootstrap.css" rel="stylesheet">
 	<link href="/static/css/backbone.notifications.css" rel="stylesheet">
@@ -17,6 +18,7 @@
 	<script src="/static/js/main.js"></script>
 	<script src="/static/js/ajax.js"></script>
 	<script src="/static/js/EventDispatcher.js"></script>
+	<script src="/static/js/Pager.js"></script>
 </head>
 <body>
 	<div><?=$header?></div>
@@ -25,6 +27,6 @@
 		<?=$content?>
 	</div>
 	<?=$footer?>
-	<?=View::factory('profiler/stats')?>
+	<?=$profile?>
 </body>
 </html>

@@ -7,20 +7,39 @@
  */
 class Model_Cards_Manager extends DBModel {
 
-	public static function loadUserCards(int $userId):Database_Result_Cached {
+	public static function loadUserCards(int $userId, int $limit, int $offset = 0):Database_Result_Cached {
 		$sql = "select *, uc.id as id from `user_cards` uc
  				join `cards` c on c.id = uc.card_id
 				where `user_id` = $userId
-				order by uc.`id` desc;";
+				order by uc.`id` desc
+				limit $offset, $limit;";
 		return static::getDb()->query(Database::SELECT, $sql);
 	}
 
-	public static function loadUserWants(int $userId):Database_Result_Cached {
+	public static function totalInfoUserCards(int $userId):array {
+		$sql = "select count(*) `count`, sum(point) points
+				from `user_cards` uc
+				join `cards` c on c.id = uc.card_id
+				where `user_id` = $userId";
+		return static::getDb()->query(Database::SELECT, $sql)->current();
+	}
+
+	public static function loadUserWants(int $userId, int $limit, int $offset = 0):Database_Result_Cached {
 		$sql = "select *, uc.id as id from `user_wants` uc
  				join `cards` c on c.id = uc.card_id
 				where `user_id` = $userId
-				order by uc.`id` desc;";
+				order by uc.`id` desc
+				limit $offset, $limit;";
 		return static::getDb()->query(Database::SELECT, $sql);
+	}
+
+
+	public static function totalInfoUserWants (int $userId):array {
+		$sql = "select count(*) `count`, sum(point) points
+				from `user_wants` uw
+				join `cards` c on c.id = uw.card_id
+				where `user_id` = $userId";
+		return static::getDb()->query(Database::SELECT, $sql)->current();
 	}
 
 	public static function loadAllWants(array $filters = []):Database_Result_Cached {

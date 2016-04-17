@@ -12,15 +12,14 @@ class Model_Trades_UserInTrades extends \Collection {
 	protected $userId;
 
 	private function __construct($userId) {
+		Observer::bind('CompleteTrade', ['Model_Trades_UserInTrades', 'onCompleteTrade']);
 		$this->userId = $userId;
 	}
 
 	private static $instances = [];
 
 	public function load():Model_Trades_UserInTrades {
-
 		foreach (Model_Trades_Manager::loadInUserTrades($this->userId, ['status' => ['pending', 'debate']]) as $trade) {
-			Debug::vars($trade);
 			$this->entities[$trade['id']] = new Model_Trades_UserTradeEntity(null, $trade);
 		}
 		return $this;
@@ -40,9 +39,22 @@ class Model_Trades_UserInTrades extends \Collection {
 				'status' => 'complete',
 				'time_closed' => date('Y-m-d H:i:s')
 			])->save();
+			print_r($trade->as_array());
+			\Observer::trigger(new Event('CompleteTrade', $trade->as_array()));
 			return $trade;
 		}
 		throw new TradeInNotFoundException;
+	}
+
+	public static function onCompleteTrade(Event $event) {
+		$trade = $event->getData();
+		$sender = Model::factory('User', $trade['sender_id']);
+		Model_Messages_Inbox::send(
+			0,
+			$trade['sender_id'],
+			'Trade complete successful',
+			sprintf('User %s has confirmed shipping of the card', $sender->username)
+		);
 	}
 }
 

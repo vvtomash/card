@@ -1,4 +1,3 @@
-
 var AddCardView = Backbone.View.extend({
 	tagName: "table",
 
@@ -48,7 +47,6 @@ var AddCardView = Backbone.View.extend({
 	}
 });
 
-
 var searchResultCollection = Backbone.Collection.extend();
 
 var SearchResultView = Backbone.View.extend({
@@ -64,6 +62,10 @@ var SearchResultView = Backbone.View.extend({
 		"click": "hide",
 	},
 	initialize: function() {
+		var $el = this.$el;
+		$('body').on('click', function() {
+			$el.hide();
+		});
 		this.listenTo(this.model, 'reset', this.render)
 		this.$input = $(this.$el.find('input'));
 	},
@@ -101,19 +103,20 @@ var SearchResultItemView = Backbone.View.extend({
 	className: "search-card",
 
 	events: {
-		"click": "addCard",
+		"click": "addCard"
 	},
 
-	initialize: function(options) {
+	initialize: function() {
 		this.render(this.model);
 	},
 
 	addCard: function(e) {
+		e.preventDefault();
 		Dispatcher.trigger('QuickAdd:Card', this.model.get('id'));
 	},
 
 	render: function(card) {
-		this.$el.html(card.get('name'));
+		this.$el.html("<a>" + card.get('name') + "</a>");
 	}
 });
 

@@ -11,6 +11,7 @@ return [
 
 	'Controller_Profile' => [
 		'index' => ['login'],
+		'update' => ['login'],
 	],
 
 	'Controller_Login' => [
@@ -24,12 +25,21 @@ return [
 
 	'Controller_Cards' => [
 		'haves' => ['login'],
+		'nextHaves' => ['login'],
 		'wants' => ['login'],
+		'nextWants' => ['login'],
 		'imports' => ['login'],
 		'remove' => ['login'],
 		'add' => ['login'],
 		'removeWant' => ['login'],
 		'addWant' => ['login'],
+	],
+
+	'Controller_Inbox' => [
+		'index' => ['login'],
+		'removeMessage' => ['login'],
+		'nextMessage' => ['login'],
+		'readMessage' => ['login'],
 	],
 
 	'Controller_Search' => [
