@@ -8,17 +8,30 @@
  */
 class Model_Search extends DBModel {
 
+	const LIMIT = 30;
+
 	const SEARCH_TEXT_MIN_LEN = 2;
 
-	public static function cardsByName(string $searchName):array {
+	public static function cardsByName(string $searchName, int $offset = 0, int $limit = self::LIMIT):array {
 		if (strlen($searchName) < self::SEARCH_TEXT_MIN_LEN) {
 			throw new SearchExeption('Too small text for search');
 		}
-		$sql = "select c.* from `cards` c
-			join `card_info` ci on ci.`card_id` = c.`id`
-			where c.`name` LIKE  ".static::getDb()->escape("%$searchName%").
-			" order by ci.multiverse_id desc;";
+		$sql = "SELECT SQL_CALC_FOUND_ROWS c.* FROM `cards` c
+			JOIN `card_info` ci ON ci.`card_id` = c.`id`
+			WHERE c.`name` LIKE  ".static::getDb()->escape("%$searchName%").
+			" ORDER BY ci.multiverse_id DESC
+			LIMIT $offset, $limit;";
 		return static::getDb()->query(Database::SELECT, $sql)->as_array();
+	}
+
+	public static function countResult(string $searchName):int {
+		if (strlen($searchName) < self::SEARCH_TEXT_MIN_LEN) {
+			throw new SearchExeption('Too small text for search');
+		}
+		$sql = "SELECT count(*) cnt FROM `cards` c
+			WHERE c.`name` LIKE  ".static::getDb()->escape("%$searchName%");
+		$result = static::getDb()->query(Database::SELECT, $sql)->as_array();
+		return Arr::get((array)reset($result), 'cnt', 0);
 	}
 }
 

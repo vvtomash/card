@@ -5,7 +5,7 @@
 				<a href="<?= $pager->getCurrentPage() === 1 ? '#' : $pager->getPrevPageUrl();?>"><</a>
 			</li>
 			<li class="<?= $pager->getCurrentPage() === 1 ? 'active' : ''?>">
-				<a href="<?= $pager->getCurrentPage() !== 1 ? $pager->getUrl() : '#'?>">1</a>
+				<a href="<?= $pager->getCurrentPage() !== 1 ? $pager->getPageUrl(1) : '#'?>">1</a>
 			</li>
 			<? if ($pager->getCountPage() > 2) {?>
 			<li>

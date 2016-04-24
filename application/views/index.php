@@ -6,12 +6,14 @@
 	<title><?=$pageName?></title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href="/static/css/bootstrap.css" rel="stylesheet">
+	<link href="/static/css/bootstrap-select.css" rel="stylesheet">
 	<link href="/static/css/backbone.notifications.css" rel="stylesheet">
 	<link href="/static/css/style.css" rel="stylesheet">
 	<link href="/static/css/forms.css" rel="stylesheet">
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script src="/static/js/bootstrap.js"></script>
+	<script src="/static/js/bootstrap-select.js"></script>
 	<script src="/static/js/underscore.js"></script>
 	<script src="/static/js/backbone.js"></script>
 	<script src="/static/js/backbone.notification.js"></script>

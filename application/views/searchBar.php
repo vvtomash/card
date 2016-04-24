@@ -5,7 +5,7 @@
 		</ul>
 		<ul class="nav navbar-nav navbar-right">
 			<li>
-				<form action="/search" method="post" class="navbar-form navbar-right" role="search">
+				<form action="/search" method="get" class="navbar-form navbar-right" role="search">
 					<div class="input-group">
 						<span class="input-group-btn">
 							<button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>

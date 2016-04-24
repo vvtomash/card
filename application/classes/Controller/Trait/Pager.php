@@ -12,8 +12,8 @@ trait Controller_Trait_Pager {
 	/**
 	 * @return View
 	 */
-	protected function getPaginator($url, $totalCount) {
+	protected function getPaginator($url, $totalCount, array $params = []) {
 		return View::factory('elements/pager')
-			->set('pager', new Pager($url, $totalCount, $this->currentPage(), $this->onPage));
+			->set('pager', new Pager($url, $totalCount, $this->currentPage(), $this->onPage, $params));
 	}
 }

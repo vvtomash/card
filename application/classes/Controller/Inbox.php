@@ -7,7 +7,6 @@ class Controller_Inbox extends Controller_Index {
 
 	public function action_index() {
 		$this->activeMenu = 'messages';
-		//echo $this->currentPage();
 		$userMessages = Model_Messages_Inbox::instance($this->currentUser->id)
 			->load($this->onPage, ($this->currentPage() - 1)*$this->onPage);
 		$this->content = View::factory('pages/messages/inbox')

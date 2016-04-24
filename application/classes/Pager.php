@@ -6,14 +6,31 @@ class Pager {
 
 	private $totalCount;
 	private $url;
+	private $params;
 	private $currentPage = 1;
 	private $onPage = self::ON_PAGE;
 
-	public function __construct($url, $totalCount, $currentPage = 1, $onPage = self::ON_PAGE) {
+	public function __construct($url, $totalCount, $currentPage = 1, $onPage = self::ON_PAGE, array $params = []) {
 		$this->setUrl($url)
+			->setParams($params)
 			->setTotalCount($totalCount)
 			->setCurrentPage(max($currentPage, 1))
 			->setOnPage($onPage);
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getParams() {
+		return $this->params;
+	}
+
+	/**
+	 * @param mixed $params
+	 */
+	public function setParams(array $params) {
+		$this->params = $params;
+		return $this;
 	}
 
 	/**
@@ -89,12 +106,25 @@ class Pager {
 	}
 
 	public function getPageUrl($page) {
-		return sprintf("%s/%s-%d", rtrim($this->getUrl(), "/"), "page", $page);
+		if ($page < 2) {
+			return rtrim(
+				sprintf( "%s?%s",
+					rtrim($this->getUrl(), "/"),
+					http_build_query($this->getParams())),
+			'?');
+		}
+		return rtrim(
+			sprintf("%s/%s-%d?%s",
+				rtrim($this->getUrl(), "/"),
+				"page",
+				$page,
+				http_build_query($this->getParams())),
+		'?');
 	}
 
 	public function getPrevPageUrl() {
 		if ($this->getCurrentPage() <= 2) {
-			return $this->getUrl();
+			return $this->getPageUrl(1);
 		} else {
 			return $this->getPageUrl($this->getCurrentPage() - 1);
 		}

@@ -35,7 +35,7 @@ var AddCardView = Backbone.View.extend({
 		var searchText = this.$input.val();
 		if (!searchText) return;
 		$.ajax(this.urls.search, {
-			method: 'post',
+			method: 'get',
 			dataType: 'json',
 			data: {searchText: searchText},
 			success : function(response) {
