@@ -1,3 +1,28 @@
+var Recipient = Backbone.Model.extend({
+	url: function() {
+		return '/profile/user/' + this.get('id')
+	},
+
+	defaults: {
+		id: null,
+		username: null,
+		firstName: null,
+		lastName: null,
+		country: null,
+		city: null,
+		address: null
+	},
+
+	parse: function(response) {
+		this.set('username', response.data.username);
+		this.set('firstName', response.data.first_name)
+		this.set('lastName', response.data.last_name)
+		this.set('country', response.data.country)
+		this.set('city', response.data.city)
+		this.set('address', response.data.address)
+	}
+});
+
 var Want = Backbone.Model.extend({
 	id: null,
 	name: null,
@@ -24,6 +49,7 @@ var WantsCollection = Backbone.Collection.extend({
 				if (data) {
 					Dispatcher.trigger('Wants:WantSended:' + wantId);
 					notifications.trigger("success", "Card was successful sended");
+					window.location.reload();
 				}
 			}
 		);
@@ -35,7 +61,7 @@ var WantView = Backbone.View.extend({
 	className: "want-cards",
 
 	events: {
-		"click .send": "sendCard",
+		"click .send .btn": "sendCard",
 	},
 
 	initialize: function() {
@@ -50,7 +76,17 @@ var WantView = Backbone.View.extend({
 	sendCard: function(e) {
 		e.preventDefault();
 		e.stopPropagation();
-		Dispatcher.trigger('Wants:SendWant', this.model.get('id'));
+		var recipientId = e.currentTarget.dataset.recipientId;
+		var recipient = new Recipient({id: recipientId});
+		recipient.fetch({
+			success: function(recipient) {
+				ConfirmSendingPopup.showPopup(recipient,
+					function() {
+						Dispatcher.trigger('Wants:SendWant', this.model.get('id'));
+					}.bind(this)
+				);
+			}.bind(this)
+		});
 	}
 });
 
