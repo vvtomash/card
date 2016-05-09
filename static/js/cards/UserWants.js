@@ -1,8 +1,32 @@
 var UserWant = Backbone.Model.extend({
-	id: null,
-	name: null,
-	point: null,
-	added_timestamp: null
+    url: '/cards/changeWant',
+	STATUS_ON: 'active',
+	STATUS_OFF: 'blocked',
+	defaults: {
+		id: null,
+		set: null,
+		name: null,
+		point: null,
+		status: null,
+		added_timestamp: null
+	},
+
+	change: function(success, error) {
+		var _this = this;
+		ajax(
+			this.url,
+			{
+				id: this.get('id'),
+				status: Math.abs(this.get('status') - 1)
+			},
+			function(data) {
+				if (data.status) {
+					_this.set('status', data.status);
+				}
+				success(data)
+			}
+		);
+	}
 });
 
 var UserWantsCollection = Backbone.Collection.extend({
@@ -70,12 +94,22 @@ var UserWantView = Backbone.View.extend({
 
 	events: {
 		"click .remove": "removeWant",
+		"click .status": "changeStatus",
+	},
+
+	template: function (data) {
+		var tmp = _.template($('#user-want-template').html());
+		return tmp(data);
 	},
 
 	initialize: function() {
 		this.$el.attr('data-id', this.model.get('id'));
 		this.listenTo(Dispatcher, 'UserWant:Removed:' + this.model.get('id'), this.remove);
 		this.listenTo(this.model, 'remove', this.remove);
+        this.listenTo(this.model, 'change:status', function() {
+            this.$el.find('.status span.glyphicon').toggleClass('glyphicon-minus').toggleClass('glyphicon-ok');
+            this.$el.find('.status').attr('data-value', this.model.get('status'));
+        });
 	},
 
 	remove: function() {
@@ -83,16 +117,24 @@ var UserWantView = Backbone.View.extend({
 	},
 
 	render: function() {
-		this.$el.append("<td>" + this.model.get('name') + "</td>");
-		this.$el.append("<td>" + this.model.get('point') + "</td>");
-		this.$el.append("<td>" + this.model.get('added_timestamp') + "</td>");
-		this.$el.append("<td><a href='#' class='btn btn-danger remove'>Remove</a></td>");
+		this.$el.html(this.template(this.model.attributes));
+		return this;
 	},
 
 	removeWant: function(e) {
 		e.preventDefault();
 		e.stopPropagation();
 		Dispatcher.trigger('UserWant:RemoveClick', this.model.get('id'));
+	},
+
+	changeStatus: function(e) {
+		e.preventDefault();
+		e.stopPropagation();
+        var newStatus = this.model.STATUS_OFF;
+		if (this.model.get('status') === this.model.STATUS_OFF) {
+            newStatus = this.model.STATUS_ON;
+        }
+		this.model.save({id: this.model.get('id'), status: newStatus}, {patch: true});
 	}
 });
 
@@ -109,6 +151,7 @@ var UserWantsViewClass = Backbone.View.extend({
 				id: $this.attr('data-id'),
 				name: $this.find('.name').text(),
 				point: $this.find('.point').text(),
+				status: $this.find('.status').attr('data-value'),
 				added_timestamp: $this.find('.added-timestamp').text()
 			});
 			collection.add(want);

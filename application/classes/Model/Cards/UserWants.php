@@ -48,4 +48,9 @@ class Model_Cards_UserWants extends \Collection {
 	public function totalInfo():array {
 		return Model_Cards_Manager::totalInfoUserWants($this->userId);
 	}
+
+	public  static function checkAvailableTrades(int $userId):bool {
+		$profile = new Model_Profile(['user_id' => $userId]);
+		return $profile->checkFullness();
+	}
 }

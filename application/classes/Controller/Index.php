@@ -4,7 +4,7 @@ class Controller_Index extends Controller {
 
 	private $profile = true;
 	protected $content;
-	protected $errors;
+	protected $errors = [];
 	protected $activeMenu;
 	protected $pageName = 'Главная';
 	/**
@@ -21,6 +21,7 @@ class Controller_Index extends Controller {
 		}
 
 		View::set_global('user', $this->currentUser);
+		$this->applyAppConfig();
 		$this->registerEvents();
 	}
 
@@ -55,6 +56,7 @@ class Controller_Index extends Controller {
 		}
 		View::set_global('activeMenu', $this->getActiveMenu());
 		View::set_global('pageName', $this->pageName);
+		View::set_global('errors', $this->errors);
 		$view = View::factory('index')
 			->set('header', $this->getHeader())
 			->set('searchBar', View::factory('searchBar')->render())
@@ -98,6 +100,10 @@ class Controller_Index extends Controller {
 		return $view->set('countUnreadMessages', \Model_Messages_Inbox::instance($this->currentUser->id)->getCountUnread());
 	}
 
+	private function applyAppConfig() {
+		View::set_global('config', Kohana::$config->load('app')->as_array());
+	}
+
 	private function getActiveMenu() {
 		$menu = explode('/', $this->activeMenu);
 		return [
@@ -109,6 +115,7 @@ class Controller_Index extends Controller {
 	private function _checkPermission() {
 		$acl = Arr::get(Kohana::$config->load('acl')->as_array(), get_called_class());
 		$action = $this->request->action();
+		$action = is_numeric($action) ? 'index' : $action;
 		if ($roles = Arr::get($acl, $action)) {
 			if (in_array('public', $roles)) {
 				return true;

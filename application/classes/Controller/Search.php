@@ -5,6 +5,8 @@ class Controller_Search extends Controller_Index {
 
 	protected $pageName = "Поиск карт";
 
+	const LIVE_SEARCH_LIMIT = 6;
+
 	public function action_index() {
 		$this->onPage = Model_Search::LIMIT;
 		$cards = [];
@@ -25,9 +27,9 @@ class Controller_Search extends Controller_Index {
 		$searchText = $this->request->query('searchText');
 		$this->content = array_map(
 			function($card) {
-				return array_intersect_key($card, array_flip(['id' ,'name']));
+				return array_intersect_key($card, array_flip(['id' ,'name', 'expansion']));
 			},
-			Model_Search::cardsByName($searchText)
+			Model_Search::cardsByName($searchText, 0, self::LIVE_SEARCH_LIMIT)
 		);
 	}
 }

@@ -5,16 +5,52 @@ class Controller_Trades extends Controller_Index {
 	public function action_send() {
 		$this->pageName = 'Послать карту';
 		$this->activeMenu = 'trades/send';
-		$wants = Model_Cards_Wants::instance()->setFilter(['user_id:not' => $this->currentUser->id])->load();
+		$wants = Model_Cards_Wants::instance()
+			->setFilter([
+				'user_id:not' => $this->currentUser->id
+			])
+			->load();
 		$this->content = View::factory('pages/trades/wants')
 			->set('wants', $wants)
 			->render();
 	}
 
+	public function action_card() {
+		$this->pageName = 'Послать карту';
+		$userCardId = $this->request->param('id');
+		$userCard = new Model_Cards_UserCardEntity($userCardId);
+
+		$wants = Model_Cards_Wants::instance()->
+			setFilter([
+				  'user_id:not' => $this->currentUser->id,
+				  'card_id' => $userCard->card_id,
+		  	])
+			->load()
+			->applyUserCards([$userCard->card_id]);
+		$counters = Model_Trades_UserCounters::getOutCounters(
+			$this->currentUser->id
+		);
+		$this->content = View::factory('pages/trades/wants')
+			->set('counters', $counters)
+			->set('wants', $wants)
+			->set('userCard', $userCard)
+			->render();
+	}
+
+	public function action_confirmSending() {
+		$tradeId = $this->request->post('tradeId');
+		$trade = new Model_Trades_UserTradeEntity($tradeId);
+		$trade->set('status', 'sending')->save();
+		\Observer::trigger(new Event('Trade:ConfirmSending', $trade->as_array()));
+		$this->content = true;
+	}
+
 	public function action_startTrade() {
 		$wantId = $this->request->post('wantId');
 		try {
-			$trade = Model_Trades_UserOutTrades::instance($this->currentUser->id)->startTrade($wantId);
+
+			$trade = Model_Trades_UserOutTrades::instance($this->currentUser->id)
+				->startTrade($wantId);
 			$trade->set('status', 'pending')->save();
 			$this->content = true;
 		} catch (TradeCreatedFailException $e) {

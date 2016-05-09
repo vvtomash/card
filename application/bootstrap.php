@@ -149,13 +149,22 @@ Cookie::$salt = 'HD*)&ig2i4yg978';
 
 Route::set('pager_without_action', '<controller>(/page-<page>)', ['page' => '[0-9]+'])
 	->defaults([
-				   'controller' => 'index',
-				   'action'     => 'index',
-			   ]);
+	   'controller' => 'index',
+	   'action'     => 'index',
+	]
+);
 
-Route::set('default', '(<controller>(/<action>(/page-<page>)))', ['page' => '[0-9]+'])
+Route::set('pager', '(<controller>(/<action>(/page-<page>)))', ['page' => '[0-9]+'])
 	->defaults([
 		'controller' => 'index',
 		'action'     => 'index',
-	]);
+	]
+);
+
+Route::set('default', '(<controller>(/<action>(/<id>)))', ['id' => '[0-9]+'])
+	->defaults([
+	   'controller' => 'index',
+	   'action'     => 'index',
+	]
+);
 

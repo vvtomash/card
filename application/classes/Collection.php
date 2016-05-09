@@ -8,6 +8,7 @@
  */
 class Collection implements ArrayAccess, Iterator {
 	protected $entities = [];
+	protected $ids = [];
 
 	public function offsetExists($offset) {
 		return isset($this->entities[$offset]);
@@ -18,6 +19,9 @@ class Collection implements ArrayAccess, Iterator {
 	}
 
 	public function offsetSet($offset, $value) {
+		if (isset($value['id'])) {
+			$this->ids[$value['id']] = $offset;
+		};
 		return $this->entities[$offset] = $value;
 	}
 
@@ -51,5 +55,32 @@ class Collection implements ArrayAccess, Iterator {
 			$res[] = $entity->as_array();
 		}
 		return $res;
+	}
+
+	public function get($id) {
+		if (isset($this->ids[$id])) {
+			return $this->entities[$this->ids[$id]];
+		}
+		throw new Exception('Could not be found by id');
+	}
+
+	public function find($field, $value, $strict = false) {
+		foreach ($this->entities as $entity) {
+			if (is_array($entity) && !isset($entity[$field]) || is_object($entity) && !isset($entity->{$field})) {
+				throw new Exception('Could not be found by id');
+			}
+			if (is_array($entity) && isset($entity[$field])) {
+				$actualValue = $entity[$field];
+			} else if (is_object($entity) && isset($entity->{$field})) {
+				$actualValue = $entity->{$field};
+			} else {
+				continue;
+			}
+			if ($strict && $actualValue === $value) {
+				return $entity;
+			} elseif (!$strict && $actualValue == $value) {
+				return $entity;
+			}
+		}
 	}
 }

@@ -18,7 +18,7 @@ class Model_Trades_UserOutTrades extends \Collection {
 	private static $instances = [];
 
 	public function load():Model_Trades_UserOutTrades {
-		foreach (Model_Trades_Manager::loadOutUserTrades($this->userId, ['status' => ['pending', 'debate']]) as $trade) {
+		foreach (Model_Trades_Manager::loadOutUserTrades($this->userId, ['status' => ['sending', 'pending', 'debate']]) as $trade) {
 			$this->entities[$trade['id']] = new Model_Trades_UserTradeEntity(null, $trade);
 		}
 		return $this;
@@ -33,8 +33,22 @@ class Model_Trades_UserOutTrades extends \Collection {
 
 	public function startTrade(int $wantId):Model_Trades_UserTradeEntity {
 		$wantCard = new Model_Cards_UserWantEntity($wantId);
+		$suitableWantCard = new Model_Cards_UserWantEntity(
+			null, Model_Trades_Manager::getSuitableWantCard($wantCard->card_id)
+		);
+		if ($suitableWantCard->card_id !== $wantCard->card_id) {
+			throw new TradeCreatedFailException('Trade can not start with this card');
+		}
+		$userCard = new Model_Cards_UserCardEntity(
+			null, Model_Trades_Manager::getSuitableUserCard($this->userId, $wantCard->card_id)
+		);
+		if (empty($userCard->card_id)) {
+			throw new TradeCreatedFailException('You have not got suitable card for the trade');
+		}
 		$userTrade = new Model_Trades_UserTradeEntity();
 		$userTrade->sender_id = $this->userId;
+		$userTrade->user_want_id = $wantCard->id;
+		$userTrade->user_card_id = $userCard->id;
 		$userTrade->recipient_id = $wantCard->user_id;
 		$userTrade->card_id = $wantCard->card_id;
 		if ($userTrade->save()) {

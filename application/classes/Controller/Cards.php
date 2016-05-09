@@ -3,7 +3,7 @@
 class Controller_Cards extends Controller_Index {
 	use Controller_Trait_Pager;
 
-	protected $pageName = 'Мои карты';
+	protected $pageName = 'Продам';
 
 	public function action_haves() {
 		$this->activeMenu = 'cards/haves';
@@ -25,8 +25,12 @@ class Controller_Cards extends Controller_Index {
 	}
 
 	public function action_wants() {
-		$this->pageName = 'Мои хотелки';
+		$this->pageName = 'Куплю';
 		$this->activeMenu = 'cards/wants';
+		if (!Model_Cards_UserWants::checkAvailableTrades($this->currentUser->id)) {
+			$this->content = View::factory('pages/cards/userWantsDenied');
+			return;
+		}
 		$userWants = Model_Cards_UserWants::instance($this->currentUser->id)
 			->load($this->onPage, ($this->currentPage() - 1)*$this->onPage);
 		$totalInfo = $userWants->totalInfo();
@@ -102,9 +106,45 @@ class Controller_Cards extends Controller_Index {
 		}
 		$this->content = [
 			'id' => $userCard->id,
+			'set' => $userCard->card_info->set_code,
 			'name' => $userCard->card->name,
 			'point' => $userCard->card->point,
 			'added_timestamp' => $userCard->added_timestamp,
 		];
+	}
+
+	public function action_change() {
+		$model = json_decode($this->request->body(), 1);
+		if (!empty($model)) {
+			$this->content = [];
+			$card = \ORM::factory('Cards_UserCardEntity', $model['id']);
+			if (isset($model['status'])) {
+				$card->status = $model['status'];
+				$this->content['status'] = $card->status;
+			}
+			if (isset($model['condition'])) {
+				$card->condition = $model['condition'];
+				$this->content['condition'] = $card->condition;
+				$this->content['point'] = $card->getPoint();
+			}
+			$card->save();
+			return $this->content;
+		}
+		throw new \Exception('Failed change');
+	}
+
+	public function action_changeWant() {
+		$model = json_decode($this->request->body(), 1);
+		if (!empty($model)) {
+			$this->content = [];
+			$want = \ORM::factory('Cards_UserWantEntity', $model['id']);
+			if (isset($model['status'])) {
+				$want->status = $model['status'];
+				$this->content['status'] = $want->status;
+			}
+			$want->save();
+			return $this->content;
+		}
+		throw new \Exception('Failed change');
 	}
 }

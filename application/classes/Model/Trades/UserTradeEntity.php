@@ -6,6 +6,9 @@
  * Time: 17:53
  */
 class Model_Trades_UserTradeEntity extends \ORM {
+
+	const TIME_CONFIRMATION_SEND = 2*24*3600; //two days
+
 	protected $_table_name = 'user_trades';
 	protected $_primary_key = 'id';
 
@@ -23,4 +26,9 @@ class Model_Trades_UserTradeEntity extends \ORM {
 			'foreign_key' => 'sender_id',
 		]
 	];
+
+	public function timeToSend() {
+		$now = time();
+		return self::TIME_CONFIRMATION_SEND - $now + strtotime($this->time_create);
+	}
 }

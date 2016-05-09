@@ -2,7 +2,7 @@
 
 trait Controller_Trait_Pager {
 
-	protected $onPage = 5;
+	protected $onPage = 20;
 	protected $currentPage = 1;
 
 	public function currentPage() {

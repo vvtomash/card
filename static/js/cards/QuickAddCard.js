@@ -40,16 +40,16 @@ var AddCardView = Backbone.View.extend({
 			data: {searchText: searchText},
 			success : function(response) {
 				if (response.data) {
-					searchResult.reset(response.data);
+					searchResultCollection.reset(response.data);
 				}
 			}
 		})
 	}
 });
 
-var searchResultCollection = Backbone.Collection.extend();
+var searchResultCollectionClass = Backbone.Collection.extend();
 
-var SearchResultView = Backbone.View.extend({
+var SearchResultViewClass = Backbone.View.extend({
 	tagName: "ul",
 
 	className: "dropdown-search-result",
@@ -116,14 +116,14 @@ var SearchResultItemView = Backbone.View.extend({
 	},
 
 	render: function(card) {
-		this.$el.html("<a>" + card.get('name') + "</a>");
+		this.$el.html("<a>" + card.get('name') + ' - ' + card.get('expansion') + "</a>");
 	}
 });
 
-
+var searchResultCollection;
 
 $(function() {
-	AddCard = new AddCardView({el: 'div.quick-add'});
-	searchResult = new searchResultCollection;
-	SearchResultView = new SearchResultView({el: 'ul.dropdown-search-result', model: searchResult});
+	var AddCard = new AddCardView({el: 'div.quick-add'});
+	searchResultCollection = new searchResultCollectionClass;
+	var SearchResultView = new SearchResultViewClass({el: 'ul.dropdown-search-result', model: searchResultCollection});
 });

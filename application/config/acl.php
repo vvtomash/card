@@ -12,6 +12,7 @@ return [
 	'Controller_Profile' => [
 		'index' => ['login'],
 		'update' => ['login'],
+		'user' => ['public', 'login'],
 	],
 
 	'Controller_Login' => [
@@ -33,6 +34,8 @@ return [
 		'add' => ['login'],
 		'removeWant' => ['login'],
 		'addWant' => ['login'],
+		'change' => ['login'],
+		'changeWant' => ['login'],
 	],
 
 	'Controller_Inbox' => [
@@ -48,8 +51,10 @@ return [
 	],
 
 	'Controller_Trades' => [
-		'send' => ['login'],
+		//'send' => ['login'],
+		'card' => ['login'],
 		'startTrade' => ['login'],
+		'confirmSending' => ['login'],
 		'sending' => ['login'],
 		'receiving' => ['login'],
 		'completeTradeIn' => ['login'],

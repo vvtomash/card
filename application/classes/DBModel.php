@@ -24,12 +24,13 @@ class DBModel extends Model {
 			if (strpos($field, ':') !== false) {
 				list($field, $negative) = explode(':', $field);
 			}
+			$field = '`'.implode('`.`', explode('.', $field)).'`';
 			if (is_array($value)) {
 				$operator = $negative === 'not' ? 'not in' : 'in';
-				$where[] = "`$field` $operator (".implode(',', (array_map([static::getDb(), 'escape'], $value))).")";
+				$where[] = "$field $operator (".implode(',', (array_map([static::getDb(), 'escape'], $value))).")";
 			} else {
 				$operator = $negative === 'not' ? '!=' : '=';
-				$where[] = "`$field` $operator ".static::getDb()->escape($value);
+				$where[] = "$field $operator ".static::getDb()->escape($value);
 			}
 		}
 		return implode(' and ', $where);

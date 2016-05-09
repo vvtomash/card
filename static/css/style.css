@@ -52,7 +52,6 @@ body {
 
 .quick-add .dropdown-search-result {
     margin: 0;
-    width: 100%;
 }
 
 .navbar-form .pager {
@@ -76,54 +75,3 @@ body {
 .search-result .card .actions {
     text-align: center;
 }
-/*.container .search .card {
-    --width: 230px;
-    --height: 270px;
-}*/
-
-/*.container .search .card .info {*/
-    /*float: left;*/
-    /*position: relative;*/
-    /*height: 100%;*/
-/*}*/
-
-/*.container .search .card .title {*/
-    /*top: 0px;*/
-/*}*/
-
-/*.container .search .card .description {*/
-    /*padding-bottom: 4px;*/
-/*}*/
-
-/*.container .search .card .img {*/
-    /*float: left;*/
-/*}*/
-
-/*.container .search .card .img img {*/
-    /*height: 200px;*/
-    /*width: auto;*/
-/*}*/
-
-/*.container .search .card .action {*/
-    /*float: right;*/
-    /*height: 100%;*/
-    /*width: 35px;*/
-/*}*/
-
-/*.container .search .card .action div {*/
-    /*float: right;*/
-    /*width: auto;*/
-    /*display: inline;*/
-    /*padding-top: 10px;*/
-    /*padding-bottom: 10px;*/
-/*}*/
-
-/*.container .search .card .action .add {*/
-    /*float: right;*/
-/*}*/
-
-/*.container .search .card .point {*/
-    /*padding: 6px 12px;*/
-    /*text-align: center;*/
-    /*width: 100%;*/
-/*}*/

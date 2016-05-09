@@ -49,7 +49,7 @@
 	</div>
 </ul>
 
-<div class="modal fade" id="popup-message" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="popup-message" tabindex="-1" role="dialog">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">

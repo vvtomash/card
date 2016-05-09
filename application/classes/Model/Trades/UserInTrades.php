@@ -12,7 +12,7 @@ class Model_Trades_UserInTrades extends \Collection {
 	protected $userId;
 
 	private function __construct($userId) {
-		Observer::bind('CompleteTrade', ['Model_Trades_UserInTrades', 'onCompleteTrade']);
+		Observer::bind('Trade:Complete', ['Model_Trades_UserInTrades', 'onCompleteTrade']);
 		$this->userId = $userId;
 	}
 
@@ -39,8 +39,7 @@ class Model_Trades_UserInTrades extends \Collection {
 				'status' => 'complete',
 				'time_closed' => date('Y-m-d H:i:s')
 			])->save();
-			print_r($trade->as_array());
-			\Observer::trigger(new Event('CompleteTrade', $trade->as_array()));
+			\Observer::trigger(new Event('Trade:Complete', $trade->as_array()));
 			return $trade;
 		}
 		throw new TradeInNotFoundException;

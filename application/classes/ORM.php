@@ -2,6 +2,8 @@
 
 class ORM extends Kohana_ORM {
 
+	protected $builded = false;
+
 	public function __construct($id = null, array $data = []) {
 		if ($id !== null) {
 			parent::__construct($id);
@@ -11,5 +13,14 @@ class ORM extends Kohana_ORM {
 		} else {
 			parent::__construct();
 		}
+		$this->builded = true;
+	}
+
+	public function __set($column, $value) {
+		parent::__set($column, $value);
+		if (!$this->builded) {
+			return;
+		}
+		\Observer::trigger(new \Event(get_called_class().':change:'.$column, ['model' =>$this]), [$column => $value]);
 	}
 }

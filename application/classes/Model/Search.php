@@ -10,13 +10,13 @@ class Model_Search extends DBModel {
 
 	const LIMIT = 30;
 
-	const SEARCH_TEXT_MIN_LEN = 2;
+	const SEARCH_TEXT_MIN_LEN = 3;
 
 	public static function cardsByName(string $searchName, int $offset = 0, int $limit = self::LIMIT):array {
 		if (strlen($searchName) < self::SEARCH_TEXT_MIN_LEN) {
 			throw new SearchExeption('Too small text for search');
 		}
-		$sql = "SELECT SQL_CALC_FOUND_ROWS c.* FROM `cards` c
+		$sql = "SELECT c.*, ci.set_code expansion FROM `cards` c
 			JOIN `card_info` ci ON ci.`card_id` = c.`id`
 			WHERE c.`name` LIKE  ".static::getDb()->escape("%$searchName%").
 			" ORDER BY ci.multiverse_id DESC

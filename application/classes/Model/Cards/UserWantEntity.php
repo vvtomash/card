@@ -14,5 +14,9 @@ class Model_Cards_UserWantEntity extends \ORM {
 			'model' => 'Cards_CardEntity',
 			'foreign_key' => 'card_id',
 		],
+		'card_info' => [
+			'model' => 'Cards_CardInfoEntity',
+			'foreign_key' => 'card_id',
+		],
 	];
 }

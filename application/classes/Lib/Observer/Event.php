@@ -13,7 +13,7 @@ class Event {
 
 	protected $stop = false;
 
-	public function __construct($name, array $data = []) {
+	public function __construct($name, $data = null) {
 		$this->name = $name;
 		$this->data = $data;
 	}

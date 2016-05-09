@@ -6,7 +6,25 @@ class Controller_Profile extends Controller_Index {
 		$this->pageName = 'Профиль пользователя';
 		$this->activeMenu = 'profile';
 		$profile = new Model_Profile(['user_id' => $this->currentUser->id]);
-		$this->content = View::factory('pages/profile')
+		$this->content = View::factory('pages/profile/edit')
+			->set('profile', $profile)
+			->render();
+
+	}
+
+	public function action_user() {
+		$this->pageName = 'Профиль пользователя';
+		$this->activeMenu = 'profile';
+		$userId = $this->request->param('id');
+		$profile = new Model_Profile(['user_id' => $userId]);
+		if ($this->request->is_ajax()) {
+			$this->content = array_merge(
+				['username' => $profile->user->username],
+				$profile->getPublicData()
+			);
+			return;
+		}
+		$this->content = View::factory('pages/profile/view')
 			->set('profile', $profile)
 			->render();
 	}

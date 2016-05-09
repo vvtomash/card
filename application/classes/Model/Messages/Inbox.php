@@ -28,7 +28,7 @@ class Model_Messages_Inbox extends \UserCollection {
 		foreach ($counters as $counter) {
 			$result[$counter['status']] = $counter['count'];
 		}
-		return array_intersect_key($result, array_combine($statuses, [0, 0]));
+		return array_merge($result, array_combine($statuses, [0, 0]));
 	}
 
 	public function getCountUnread():int {

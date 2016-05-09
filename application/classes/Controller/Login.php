@@ -2,6 +2,9 @@
 
 class Controller_Login extends Controller_Index {
 	public function action_index() {
+		if (Auth::instance()->logged_in('login')) {
+			$this->redirect('/');
+		}
 		$email = $this->request->post('email');
 		$password = $this->request->post('password');
 		if (Auth::instance()->login($email, $password, true)) {

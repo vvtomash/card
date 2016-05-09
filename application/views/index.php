@@ -16,6 +16,7 @@
 	<script src="/static/js/bootstrap-select.js"></script>
 	<script src="/static/js/underscore.js"></script>
 	<script src="/static/js/backbone.js"></script>
+	<script src="/static/js/countdown.js"></script>
 	<script src="/static/js/backbone.notification.js"></script>
 	<script src="/static/js/main.js"></script>
 	<script src="/static/js/ajax.js"></script>
@@ -30,5 +31,6 @@
 	</div>
 	<?=$footer?>
 	<?=$profile?>
+	<?=View::factory('config')->render();?>
 </body>
 </html>
