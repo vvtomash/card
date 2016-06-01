@@ -9,10 +9,11 @@ class Model_Cards_Manager extends DBModel {
 
 	public static function loadUserCards(int $userId, int $limit, int $offset = 0):Database_Result_Cached {
 		$sql = "select uc.*, c.*, uc.id as id,
-					ci.`set_code` `card_info:set_code`,
-					ci.`set` `card_info:set`
+					s.`short_name` `card_info:set_code`,
+					s.`name` `card_info:set`
 				from `user_cards` uc
  				join `cards` c on c.id = uc.card_id
+ 				join `sets` s on c.set_id = s.id
  				join `card_info` ci on c.id = ci.card_id
  				left join `user_trades` ut on ut.user_card_id = uc.id
 				where
@@ -36,10 +37,11 @@ class Model_Cards_Manager extends DBModel {
 
 	public static function loadUserWants(int $userId, int $limit, int $offset = 0):Database_Result_Cached {
 		$sql = "select uw.*, c.*, uw.id as id,
-					ci.`set_code` `card_info:set_code`,
-					ci.`set` `card_info:set`
+					s.`short_name` `card_info:set_code`,
+					s.`name` `card_info:set`
 				from `user_wants` uw
  				join `cards` c on c.id = uw.card_id
+ 				join `sets` s on c.set_id = s.id
  				join `card_info` ci on c.id = ci.card_id
  				left join `user_trades` ut on ut.user_want_id = uw.id
 				where
@@ -103,5 +105,10 @@ class Model_Cards_Manager extends DBModel {
 	public static function blockUserWants(int $userId) {
 		$sql = "update `user_wants` set `status` = 'blocked' where user_id = $userId";
 		static::getDb()->query(Database::UPDATE, $sql);
+	}
+
+	public static function getCardTypes():Database_Result_Cached {
+		$sql = "select * from `card_type`";
+		return static::getDb()->query(Database::SELECT, $sql);
 	}
 }

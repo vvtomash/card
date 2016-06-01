@@ -1,0 +1,95 @@
+.user-collection {
+    border: 1px solid red;
+    width: 100%;
+    height: auto;
+    position: relative;
+}
+
+.user-collection .header {
+    border: 1px solid red;
+    width: 100%;
+    height: auto;
+    position: relative;
+}
+
+.user-collection .content {
+    border: 1px solid red;
+    padding-left: 246px;
+    width: 100%;
+    height: auto;
+    position: relative;
+}
+
+.user-collection .content .filters{
+    position: relative;
+    top: 0;
+    width: 100%;
+}
+
+.user-collection .bottom {
+    border: 1px solid red;
+    width: 100%;
+    height: auto;
+    position: relative;
+}
+
+.user-collection .left {
+    display: block;
+    border: 1px solid red;
+    width: 240px;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.user-collection .right {
+    left: 0;
+    width: 100%;
+    position: relative;
+    border: 1px solid red;
+    clear: both;
+}
+
+.user-collection .card {
+    position: relative;
+}
+
+.user-collection .card .count {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.user-collection .card .btn-group {
+    position: absolute;
+}
+
+.user-collection .card .btn-group button {
+    border: 0;
+    opacity: 0.5;
+}
+
+.user-collection .card .card-settings {
+    right: 0;
+    top: 0;
+}
+
+.user-collection .card .card-trades {
+    bottom: 0;
+    right: 0;
+}
+
+.user-collection .card img {
+    width: 100%;
+    height: 100%;
+}
+
+.user-collection .top-sorts .collection-sorts .option-icon,
+.user-collection .left.collection-filters .option-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.user-collection .left-filters .collection-filters {
+
+}

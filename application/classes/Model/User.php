@@ -25,4 +25,15 @@ class Model_User extends Model_Auth_User {
 			],
 		];
 	}
+
+	/**
+	 * Allows a model use both email and username as unique identifiers for login
+	 *
+	 * @param   string  unique value
+	 * @return  string  field name
+	 */
+	public function unique_key($value)
+	{
+		return 'email';
+	}
 }

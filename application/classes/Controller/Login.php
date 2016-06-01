@@ -7,10 +7,17 @@ class Controller_Login extends Controller_Index {
 		}
 		$email = $this->request->post('email');
 		$password = $this->request->post('password');
-		if (Auth::instance()->login($email, $password, true)) {
-			return $this->redirect('/');
+		try {
+			if (Auth::instance()->login($email, $password, true)) {
+				return $this->redirect('/');
+			}
+		} catch (Kohana_Auth_Exception $e) {
+			$this->errors = [$e->getMessage()];
 		}
-		$this->content = View::factory('forms/login')->render();
+		$this->content = View::factory('forms/login')
+			->set('errors', $this->errors )
+			->set('email', $email)
+			->render();
 	}
 
 	public function action_logout() {

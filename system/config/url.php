@@ -3,7 +3,8 @@
 return array(
 
 	'trusted_hosts' => array(
-		'www.tomash.in.ua'
+		'www.tomash.in.ua',
+		'tomash.in.ua',
 		// Set up your hostnames here
 		//
 		// Example:

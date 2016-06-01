@@ -60,5 +60,9 @@ return [
 		'completeTradeIn' => ['login'],
 		'history' => ['login'],
 		'partners' => ['login'],
+	],
+
+	'Controller_Collection' => [
+		'index' => ['login'],
 	]
 ];

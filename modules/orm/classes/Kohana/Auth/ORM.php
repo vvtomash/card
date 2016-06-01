@@ -78,12 +78,18 @@ class Kohana_Auth_ORM extends Auth {
 			// Load the user
 			$user = ORM::factory('User');
 			$user->where($user->unique_key($username), '=', $username)->find();
+			if (!$user->loaded()) {
+				throw new Kohana_Auth_Exception('Email not register');
+			}
 		}
 
 		if (is_string($password))
 		{
 			// Create a hashed password
 			$password = $this->hash($password);
+		}
+		if ($user->password !== $password) {
+			throw new Kohana_Auth_Exception('Failed password');
 		}
 		// If the passwords match, perform a login
 		if ($user->has('roles', ORM::factory('Role', array('name' => 'login'))) AND $user->password === $password)

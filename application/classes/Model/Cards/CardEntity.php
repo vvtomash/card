@@ -15,5 +15,4 @@ class Model_Cards_CardEntity extends \ORM {
 			'foreign_key' => 'card_id',
 		]
 	];
-
 }

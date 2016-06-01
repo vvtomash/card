@@ -32,9 +32,27 @@ $(function() {
 				countdown.HOURS|countdown.MINUTES|countdown.SECONDS
 			);
 		}
-	})
+	});
+
+	$('body').popover({
+		selector: '.card-data-tooltip-view',
+		html: true,
+		content: function () {
+			console.log($('.card-data-tooltip').html());
+			return $('.card-data-tooltip').html();
+		},
+		delay: {show: 1000, hide: 100000},
+		trigger: 'hover'
+	});
 
 })
+
+function merge(object1, object2) {
+	for (var key in object2) {
+		object1[key] = object2[key];
+	}
+	return object1;
+}
 
 
 

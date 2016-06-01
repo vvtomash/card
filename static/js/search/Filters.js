@@ -3,7 +3,6 @@ var FilterModel = Backbone.Model.extend({
 });
 
 var FilterView = Backbone.View.extend({
-
 	initialize: function() {
 		this.$selectSets = this.$el.find('.select-sets');
 		this.$selectSets.selectpicker({
@@ -31,6 +30,5 @@ $(function(){
 
 	$('body').on('click', '.search-filters-btn', function() {
 		Filter.toggle();
-		console.log('show');
 	});
 });

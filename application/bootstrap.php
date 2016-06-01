@@ -16,6 +16,7 @@ else
 	require SYSPATH.'classes/Kohana'.EXT;
 }
 
+require APPPATH.'constants'.EXT;
 /**
  * Set the default time zone.
  *

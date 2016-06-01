@@ -38,7 +38,9 @@
 				<td class="set">
 					<span  data-toggle="tooltip" title="<?=$card->card_info->set?>"><?= $card->card_info->set_code?></span>
 				</td>
-				<td class="name"><a href="/trades/card/<?=$card->id?>"><?= substr($card->name, 0, 50)?></a></td>
+				<td class="name">
+					<a href="/trades/card/<?=$card->id?>" class="card-data-tooltip-view"><?= substr($card->name, 0, 50);?></a>
+				</td>
 				<td class="point"><?= $card->getPoint()?></td>
 				<td class="status text-center" data-value="<?= $card->status?>" ><span class="glyphicon <? if ($card->status) {?>glyphicon-ok<?} else {?>glyphicon-minus<?}?>"></span></td>
 				<td class="foil text-center" data-value="<?= $card->foil?>"><span class="glyphicon glyphicon-minus"></span></td>
@@ -67,11 +69,24 @@
 		</tr>
 	</tfoot>
 </table>
+
 <ul class="nav nav-pills">
 	<div class="navbar-right navbar-form">
 		<?=$pager?>
 	</div>
 </ul>
+
+<div class="card-data-tooltip popover top">
+	<div class="arrow"></div>
+	<h3 class="popover-title">Popover top</h3>
+	<div class="popover-content">
+		<p>
+			Sed posuere consectetur est at lobortis.
+			Aenean eu leo quam.
+			Pellentesque ornare sem lacinia quam venenatis vestibulum.
+		</p>
+	</div>
+</div>
 
 <script type="x-template" id="user-card-template" class="hidden">
 	<td class="set">{{= set }}</td>

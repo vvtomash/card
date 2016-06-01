@@ -116,7 +116,7 @@ var SearchResultItemView = Backbone.View.extend({
 	},
 
 	render: function(card) {
-		this.$el.html("<a>" + card.get('name') + ' - ' + card.get('expansion') + "</a>");
+		this.$el.html("<a>" + card.get('name') + ' - ' + card.get('set_code') + "</a>");
 	}
 });
 
