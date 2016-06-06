@@ -6,7 +6,7 @@
  * Date: 12.03.16
  * Time: 19:17
  */
-class Collection implements ArrayAccess, Iterator {
+class Collection implements ArrayAccess, Iterator, JsonSerializable {
 	protected $entities = [];
 	protected $ids = [];
 
@@ -62,6 +62,10 @@ class Collection implements ArrayAccess, Iterator {
 			return $this->entities[$this->ids[$id]];
 		}
 		throw new Exception('Could not be found by id');
+	}
+
+	public function jsonSerialize() {
+		return $this->entities;
 	}
 
 	public function find($field, $value, $strict = false) {

@@ -19,13 +19,17 @@
 	<div class="content">
 		<div class="top-sorts">
 			<?= View::factory('pages/collection/sorts')
+				->set('expansions', $expansions)
 				->set('types', $types)
 				->render()
 			?>
 		</div>
 		<div class="left collection-filters">
 			<?= View::factory('pages/collection/filters')
+				->set('expansions', $expansions)
+				->set('rarities', $rarities)
 				->set('types', $types)
+				->set('colors', $colors)
 				->render()?>
 		</div>
 		<div class="right">

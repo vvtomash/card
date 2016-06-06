@@ -111,4 +111,14 @@ class Model_Cards_Manager extends DBModel {
 		$sql = "select * from `card_type`";
 		return static::getDb()->query(Database::SELECT, $sql);
 	}
+
+	public static function getCardColors():Database_Result_Cached {
+		$sql = "select * from `card_color`";
+		return static::getDb()->query(Database::SELECT, $sql);
+	}
+
+	public static function getCardRarities():Database_Result_Cached {
+		$sql = "select * from `card_rarity`";
+		return static::getDb()->query(Database::SELECT, $sql);
+	}
 }

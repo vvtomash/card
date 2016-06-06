@@ -64,5 +64,6 @@ return [
 
 	'Controller_Collection' => [
 		'index' => ['login'],
+		'search' => ['login'],
 	]
 ];

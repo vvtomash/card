@@ -1,39 +1,33 @@
 <script src="/static/js/collection/Filters.js"></script>
-<form action="/search-collection" method="get" role="search">
+<form action="collection">
 	<div>
 		<div class="input-group">
 			<input name="searchText" type="text" class="form-control" placeholder="Поиск карт">
 		</div>
 	</div>
 	<div>
-		<select class="select-sets selectpicker" multiple >
-			<option data-content="<img class='option-icon' src='/static/img/sets/small/bfz.png'/>"></option>
-			<option data-content="<img class='option-icon' src='/static/img/sets/small/dtk.png'/>"></option>
-			<option data-content="<img class='option-icon' src='/static/img/sets/small/ogw.png'/>"></option>
-			<option data-content="<img class='option-icon' src='/static/img/sets/small/pd3.png'/>"></option>
-			<option data-content="<img class='option-icon' src='/static/img/sets/small/ori.png'/>"></option>
-			<option data-content="<img class='option-icon' src='/static/img/sets/small/soi.png'/>"></option>
-			<option data-content="<img class='option-icon' src='/static/img/sets/small/v10.png'/>"></option>
+		<select name="set" class="select-expansion selectpicker" multiple>
+			<? foreach($expansions as $expansion) {?>
+				<option value="<?=$expansion['id']?>" class="text-right" data-content="<span><img class='option-icon pull-left' src='/static/img/expansions/small/<?=strtolower($expansion['short_name'])?>.png'/><?=$expansion['short_name']?></span>"></option>
+			<? } ?>
 		</select>
 	</div>
 	<div>
-		<select class="select-types selectpicker" multiple>
+		<select name="type" class="select-type selectpicker" multiple>
 			<? foreach($types as $type) {?>
 				<option value="<?=$type['id']?>"><?=$type['type']?></option>
 			<? } ?>
 		</select>
 	</div>
 	<div>
-		<select class="select-colors selectpicker" multiple>
-			<option data-content="<img class='option-icon' src='/static/img/colors/white.png'/>"></option>
-			<option data-content="<img class='option-icon' src='/static/img/colors/blue.png'/>"></option>
-			<option data-content="<img class='option-icon' src='/static/img/colors/black.png'/>"></option>
-			<option data-content="<img class='option-icon' src='/static/img/colors/red.png'/>"></option>
-			<option data-content="<img class='option-icon' src='/static/img/colors/green.png'/>"></option>
+		<select name="color" class="select-color selectpicker" multiple>
+			<? foreach($colors as $color) {?>
+				<option value="<?=$color['id']?>" class="text-right" data-content="<span><img class='option-icon pull-left' src='/static/img/colors/<?=$color['color']?>.png'/><?=$color['color']?></span>"></option>
+			<? } ?>
 		</select>
 	</div>
 	<div>
-		<select class="select-cmc selectpicker" multiple>
+		<select name="cmc" class="select-cmc selectpicker" multiple>
 			<option>0</option>
 			<option>1</option>
 			<option>2</option>
@@ -43,15 +37,14 @@
 		</select>
 	</div>
 	<div>
-		<select class="select-rarity selectpicker" multiple>
-			<option>Common</option>
-			<option>Uncommon</option>
-			<option>Rare</option>
-			<option>Mythic</option>
+		<select name="rarity" class="select-rarity selectpicker" multiple>
+			<? foreach($rarities as $rarity) {?>
+				<option value="<?=$rarity['id']?>"><?=ucfirst($rarity['name'])?></option>
+			<? } ?>
 		</select>
 	</div>
 	<div>
-		<button type="submit" class="btn btn-primary">
+		<button type="submit" class="apply-filters btn btn-primary">
 			 Искать!
 		</button>
 	</div>
