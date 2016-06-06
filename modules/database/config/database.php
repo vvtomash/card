@@ -18,10 +18,10 @@ return array
 			 *
 			 * Ports and sockets may be appended to the hostname.
 			 */
-			'hostname'   => 'tomash.mysql.ukraine.com.ua',
-			'database'   => 'tomash_db',
-			'username'   => 'tomash_db',
-			'password'   => 'cxRkNNG5',
+			'hostname'   => '',
+			'database'   => '',
+			'username'   => '',
+			'password'   => '',
 			'persistent' => FALSE,
 		),
 		'table_prefix' => '',
@@ -39,9 +39,9 @@ return array
 			 * string   password    database password
 			 * boolean  persistent  use persistent connections?
 			 */
-			'dsn'        => 'mysql:host=tomash.mysql.ukraine.com.ua;dbname=tomash_db',
-			'username'   => 'tomash_db',
-			'password'   => 'cxRkNNG5',
+			'dsn'        => '',
+			'username'   => '',
+			'password'   => '',
 			'persistent' => FALSE,
 		),
 		/**
